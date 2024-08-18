@@ -1,0 +1,150 @@
+
+  <style>
+    .body{
+        background: gray;
+    }
+    .container{
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        margin-inline: 30%;
+        max-height: 100%;
+        align-items: center;
+        box-shadow: inset;
+        border-radius: 10px;
+        background-color: chocolate;
+        height: 80%;
+        padding-top: -400px;
+    }
+    .head{
+        margin-top: -300px;
+    }
+    .head h1{
+        display: flex;
+        justify-content: center;
+    }
+    .head >div> button{
+        margin-left: 6rem;
+        border-radius: 10px;
+        background-color: yellowgreen;
+        padding: 2px 5px;
+    }
+    #todos button{
+        margin:2px;
+        border-radius: 10px;
+        background-color: yellowgreen;
+        padding: 2px 5px;
+    }
+    .head >div> input{
+        border-radius: 10px;
+        
+    }
+    #todos{
+        margin-top: 20px;
+    }
+  </style>  
+
+<body>
+    <div class="container">
+        <div class="head">
+            <h1>
+                Todo App
+            </h1>
+            <div>
+                <input type="text"></input>
+                <button onclick="addTodo()">Add todo!</button>
+            </div>
+            
+            <div id="todos"></div>
+
+        </div>
+       
+    </div>
+    
+    <script>
+      let todos = [];
+
+      document.addEventListener('click',(e)=>{
+        console.log(e);
+       if(! document.getElementById('todos').contains(e.target)){
+              const inputs=   document.querySelectorAll('input');
+              for(let i=1;i<inputs.length;i++){
+               // console.log(inputele);
+                   if(true){ 
+                    inputs[i].style.outline="none";
+                    inputs[i].style.border="none"
+                    inputs[i].style.fontWeight="bold";
+                    inputs[i].style.fontSize=18;
+                    inputs[i].disabled=true;
+                    inputs[i].style.backgroundColor="chocolate";
+                    //inputs[i].style.width="120px"
+                   }
+                }
+       }
+      });
+      function addTodo() {
+        todos.push({
+          title: document.querySelector("input").value
+        })
+        render();
+      }
+      function editTodo(index){
+        let curElement=document.getElementById('todo-'+index);
+        let curCheckBox=document.getElementById('check-'+index);
+        
+        curElement.style.border="1px solid";
+        curElement.focus();
+        //curElement.style.fontSize=12;
+        curElement.style.backgroundColor="grey";
+        curElement.style.fontWeight="normal";
+        curElement.disabled=false;
+        curCheckBox.disabled=false;
+      }
+      function deleteTodo(index) {
+        todos.splice(index,1);
+        render();
+      }
+      let counter=0;
+      function createTodo(todo){
+        const div=document.createElement("div");
+        const checkbox=document.createElement("input");
+        checkbox.setAttribute("type","checkbox");
+        checkbox.setAttribute("id","check-"+counter);
+            const inputele=document.createElement("input");
+            inputele.setAttribute("id","todo-"+counter);
+            const button=document.createElement("button");
+            const editButton=document.createElement("button");
+
+            editButton.innerHTML="Edit";
+            editButton.setAttribute("onClick","editTodo("+counter+")");
+            button.setAttribute("onClick","deleteTodo("+counter+")");
+            
+            button.innerHTML="Delete";
+            inputele.value=todo.title;
+            inputele.style.outline="none";
+            inputele.style.border="none"
+            inputele.style.fontWeight="bold";
+            inputele.style.fontSize=18;
+            inputele.style.backgroundColor="blue";
+            inputele.style.borderRadius="10px";
+            inputele.disabled=true;
+           
+            div.append(checkbox);
+            div.append(inputele);
+            div.append(editButton);
+            div.append(button);
+            counter++;
+            return div;
+      }
+      function render() {
+        document.querySelector("#todos").innerHTML="";
+         for(let i=0;i<todos.length;i++){
+            const div=createTodo(todos[i])
+            document.querySelector("#todos").appendChild(div);
+         }
+    
+         document.querySelector("input").innerHTML="";
+    
+      }
+    </script>
+  </body>
